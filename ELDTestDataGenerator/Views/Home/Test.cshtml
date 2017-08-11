@@ -1,0 +1,16 @@
+﻿@model ELDTestDataGenerator.Models.EventSet
+
+@{
+    ViewBag.Title = "Test";
+    string coords = ViewBag.Coords;
+
+}
+
+<h2>Test</h2>
+@foreach (var x in Model.eventObjects) {
+    string mapCoords = string.Format("{0},{1}", x.transientOBDReadings.Latitude, x.transientOBDReadings.Longitude);
+    @mapCoords <br />
+
+}
+
+

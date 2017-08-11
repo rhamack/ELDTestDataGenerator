@@ -142,9 +142,27 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="EventGenerator.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="GPSCalculator.cs" />
+    <Compile Include="GPSParms.cs" />
+    <Compile Include="GPSResult.cs" />
+    <Compile Include="Models\CommonParms.cs" />
+    <Compile Include="Models\Constants.cs" />
+    <Compile Include="Models\CurrentDriverState.cs" />
+    <Compile Include="Models\CurrentLocationState.cs" />
+    <Compile Include="Models\CurrentTripState.cs" />
+    <Compile Include="Models\CurrentVehicleState.cs" />
+    <Compile Include="Models\DataDiagnosticState.cs" />
+    <Compile Include="Models\DeviceMalfunctionState.cs" />
+    <Compile Include="Models\EventSet.cs" />
+    <Compile Include="Models\GPSLocation.cs" />
+    <Compile Include="Models\ProfileSegment.cs" />
+    <Compile Include="Models\Segment.cs" />
+    <Compile Include="Models\TestProfile.cs" />
+    <Compile Include="Models\TransientOBDReadings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -184,10 +202,10 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\Test.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

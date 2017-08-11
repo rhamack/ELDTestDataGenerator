@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ELDTestDataGenerator.Models
 {
-    public class CurrentDriverState
+    public class CurrentDriverState 
     {
         public string DriverId { get; set; }
         public string DeviceId { get; set; }
@@ -36,6 +36,39 @@ namespace ELDTestDataGenerator.Models
 
         public bool IsUnidentifiedDriver { get; set; }
 
-        
+        public CurrentDriverState() {
+        }
+
+        public CurrentDriverState(bool setDefaults)
+        {
+            if (setDefaults)
+                SetDefaults();
+        }
+
+        public CurrentDriverState Clone()
+        {
+            CurrentDriverState clone = new CurrentDriverState();
+            clone = (CurrentDriverState)this.MemberwiseClone();
+            return clone;
+        }
+
+        public void SetDefaults() {
+            this.CarrierMultiDayBasis = "7";
+            this.DeviceId = "testdevice";
+            this.DriverDayStartHour = 0;
+            this.DriverFirstName = "Test";
+            this.DriverId = "testdriverid";
+            this.DriverIsExempt = false;
+            this.DriverLastName = "Driver";
+            this.DriverLicenseIssuingStateCode = "AZ";
+            this.DriverLicenseNumber = "AZ123456";
+            this.IsUnidentifiedDriver = false;
+            this.PersonalUseOfCMVAllowed = false;
+            this.PersonalUseOfCMVInEffect = false;
+            this.TimeZoneId = "Mountain Standard Time";
+            this.YardMovesAllowed = false;
+            
+        }
+
     }
 }

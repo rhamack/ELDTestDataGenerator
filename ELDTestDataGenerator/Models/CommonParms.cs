@@ -5,7 +5,7 @@ using System.Web;
 
 namespace ELDTestDataGenerator.Models
 {
-    public class CommonParms
+    public class CommonParms 
     {
 
         public string EventId { get; private set; }

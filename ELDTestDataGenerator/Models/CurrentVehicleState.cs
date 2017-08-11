@@ -40,20 +40,26 @@ namespace ELDTestDataGenerator.Models
             }
         }
 
-        public CurrentVehicleState CloneFromCurrent()
-        {
-            CurrentVehicleState cvs = new CurrentVehicleState();
-            cvs.CurrentEventCode = this.CurrentEventCode;
-            cvs.CurrentSpecialDrivingCategoryCode = this.CurrentSpecialDrivingCategoryCode;
-            cvs.SpeedometerReading = this.SpeedometerReading;
-            cvs.VehicleIsMoving = this.VehicleIsMoving;
-            return cvs;
-        }
-
         public CurrentVehicleState Clone()
         {
-            CurrentVehicleState cvs = (CurrentVehicleState)this.MemberwiseClone();
+            CurrentVehicleState cvs = new CurrentVehicleState();
+            cvs = (CurrentVehicleState)this.MemberwiseClone();
             return cvs;
+
+        }
+
+        public CurrentVehicleState() { }
+
+        public CurrentVehicleState(Models.TestProfile p) {
+                SetDefaults();
+        }
+
+
+        public void SetDefaults() {
+            this.CurrentEventCode = 1; // off duty
+            this.CurrentSpecialDrivingCategoryCode = 0; // none
+            this.SpeedometerReading = 0;
+            this.VehicleIsMoving = false;
 
         }
     }

@@ -15,6 +15,11 @@ namespace ELDTestDataGenerator.Models
             eventObjects = new List<EventObjects>();
         }
 
+        public string ToSerializedJson() {
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return json;
+        }
+
     }
 
     public class EventObjects {

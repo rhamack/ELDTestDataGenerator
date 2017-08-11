@@ -22,5 +22,16 @@ namespace ELDTestDataGenerator.Models
 
         public string DataDiagnosticCode { get; set; }
 
+        public TransientOBDReadings() {
+        }
+
+        public TransientOBDReadings(TestProfile p) {
+            this.Latitude = p.travelProfile.startingLatitude; 
+            this.Longitude = p.travelProfile.startingLongitude ;
+            this.SpeedometerReading = 0;
+            this.EngineHours = p.startingEngineHours;
+            this.OdometerReading = p.startingOdometer;
+        }
+
     }
 }

@@ -14,65 +14,30 @@ namespace ELDTestDataGenerator
 
             // default
             Models.TestProfile p = new Models.TestProfile();
-            p.LoadTrip();
-
-            double lat = p.startingLatitude;
-            double lng = p.startingLongitude;
-
-            Models.EventObjects eo = new Models.EventObjects();
-            es.eventObjects.Add(eo);
-
-            // startup events...
-            Models.TransientOBDReadings obd = new Models.TransientOBDReadings();
-            obd.Latitude = lat;
-            obd.Longitude = lng;
-            obd.SpeedometerReading = 0;
-            eo.transientOBDReadings = obd;
+            p.LoadTripSegments();
 
             DateTimeOffset currDT = p.StartingDateTime;
 
+            bool setDefaults = true;
+
             // set the current states
-            Models.CurrentLocationState currentLocationState = new Models.CurrentLocationState(); // done
-            Models.CurrentVehicleState currentVehicleState = new Models.CurrentVehicleState();    // done
+            Models.CurrentLocationState currentLocationState = new Models.CurrentLocationState(p); // done
+            Models.CurrentVehicleState currentVehicleState = new Models.CurrentVehicleState(p);    // done
             Models.DataDiagnosticState dataDiagnosticState = new Models.DataDiagnosticState();    // TODO:
             Models.DeviceMalfunctionState deviceMalfunctionState = new Models.DeviceMalfunctionState(); //TODO:
-            Models.CurrentTripState currentTripState = new Models.CurrentTripState();             // TODO:
+            Models.CurrentTripState currentTripState = new Models.CurrentTripState(setDefaults);
             Models.CommonParms commonParms = new Models.CommonParms();
 
-            // set up the current Vehicle state
-            currentVehicleState.CurrentEventCode = 1; // off duty
-            currentVehicleState.CurrentSpecialDrivingCategoryCode = 0; // none
-            currentVehicleState.SpeedometerReading = 0;
-            currentVehicleState.VehicleIsMoving = false;
-
-
-
-
-
-
-            // set the current and previous locations
-            Models.Location PrevLocation = new Models.Location();
-            Models.Location currLocation = new Models.Location();
-
-            currLocation.EngineHours = p.startingEngineHours;
-            currLocation.Latitude = lat;
-            currLocation.LocationRecordedDateTime = p.StartingDateTime;
-            currLocation.OdometerReading = p.startingOdometer;
-            currLocation.ReducedGPSPrecision = false;
-
-            PrevLocation.EngineHours = p.startingEngineHours;
-            PrevLocation.Latitude = lat;
-            PrevLocation.LocationRecordedDateTime = p.StartingDateTime;
-            PrevLocation.OdometerReading = p.startingOdometer;
-            PrevLocation.ReducedGPSPrecision = false;
-
-            currentLocationState.CurrentLocation = currLocation;
-            currentLocationState.PreviousLocation = PrevLocation;
-
-
+            Models.TransientOBDReadings obd = new Models.TransientOBDReadings(p);
+            obd.VIN = currentTripState.VIN;
 
             int intermediateInterval = 300; // 5 minutes?
             int currentBearing = 180;
+
+            double lat = p.travelProfile.startingLatitude;
+            double lng = p.travelProfile.startingLongitude;
+            double engineHours = p.startingEngineHours;
+            int odometer = p.startingOdometer;
 
             foreach (var pseg in p.profileSegments)
             {
@@ -83,62 +48,94 @@ namespace ELDTestDataGenerator
 
                     // calc the new position and create the event objects
                     Models.EventObjects eox = new Models.EventObjects();
+                    eox.IntendedEventName = pseg.Action;
                     es.eventObjects.Add(eox);
 
-                    currentBearing = GetBearing(lat, lng, currentBearing);
+                    // calculate the new position
+                    currentBearing = p.travelProfile.GetBearing(lat, lng, currentBearing);
+                    if (pseg.MPH > 0)
+                    {
+                        // moving, so calc new position
+                        var r = GPSCalculator.CalcPosition(lat, lng, currentBearing, pseg.MPH, intermediateInterval);
 
-                    var r = GPSCalculator.CalcPosition(lat, lng, currentBearing, pseg.MPH, intermediateInterval);
-                    var obdx = new Models.TransientOBDReadings() { Latitude = r.EndingLatitude, Longitude = r.EndingLongitude, SpeedometerReading = (byte)pseg.MPH };
+                        // accumulate the trip values
+                        odometer += (int)r.MilesTraveled;
+
+                        lat = r.EndingLatitude;
+                        lng = r.EndingLongitude;
+
+                    }
+                    // add the interval to the engine hours
+                    engineHours += (double)((double)intermediateInterval / (double)3600);
+
+                    var obdx = new Models.TransientOBDReadings() { Latitude = lat, Longitude = lng, SpeedometerReading = (byte)pseg.MPH, VIN=currentTripState.VIN , OdometerReading = odometer, EngineHours = engineHours};
                     eox.transientOBDReadings = obdx;
 
                     // set the location state
                     currentLocationState.SetNewLocation(obdx);
 
+                    // modify vehicle state
+                    int seqnum = currentVehicleState.GetNextEventSequenceNumber();
+                    eox.SeqNum = seqnum;
 
-                    // clone the vehicle state
                     currentVehicleState.SpeedometerReading = (byte)pseg.MPH;
                     if (pseg.MPH > 0)
-                    {
                         currentVehicleState.VehicleIsMoving = true;
-                    }
 
                     switch (pseg.Action)
                     {
-                        case "PreDrivingMovement":
-                            currentVehicleState.CurrentEventCode = 4; // on duty
+                        case "DriverLogin":
+                            currentVehicleState.CurrentEventCode = 4; // on duty not driving
                             currentVehicleState.CurrentSpecialDrivingCategoryCode = 0;
+                            currentTripState.CurrentDriver.PersonalUseOfCMVInEffect = false;
+                            break;
+                        case "EngineStart":
+                            currentVehicleState.CurrentEventCode = 4; // on duty not driving
+                            currentVehicleState.CurrentSpecialDrivingCategoryCode = 0;
+                            currentTripState.CurrentDriver.PersonalUseOfCMVInEffect = false;
+                            break;
+
+                        case "PreDrivingMovement":
+                            //currentVehicleState.CurrentEventCode = 4; // whatever it was before
+                            currentVehicleState.CurrentSpecialDrivingCategoryCode = 0;
+                            currentTripState.CurrentDriver.PersonalUseOfCMVInEffect = false;
                             break;
                         case "Driving":
                             currentVehicleState.CurrentEventCode = 3; // driving
                             currentVehicleState.CurrentSpecialDrivingCategoryCode = 0;
+                            currentTripState.CurrentDriver.PersonalUseOfCMVInEffect = false;
                             break;
                         case "DrivingPersonalUse":
                             currentVehicleState.CurrentEventCode = 3; // driving
                             currentVehicleState.CurrentSpecialDrivingCategoryCode = 1;
+                            currentTripState.CurrentDriver.PersonalUseOfCMVInEffect = true;
                             break;
                         case "DrivingYardMoves":
                             currentVehicleState.CurrentEventCode = 3; // driving
                             currentVehicleState.CurrentSpecialDrivingCategoryCode = 2;
+                            currentTripState.CurrentDriver.PersonalUseOfCMVInEffect = false;
+                            break;
+                        case "StopMoving":
+                            //currentVehicleState.CurrentEventCode = 3; // whatever it was before
+                            currentVehicleState.CurrentSpecialDrivingCategoryCode = 0;
+                            currentTripState.CurrentDriver.PersonalUseOfCMVInEffect = false;
                             break;
 
                     }
 
 
                     // clone the current states into the eventobjects
-                    eox.currentVehicleState = currentVehicleState.CloneFromCurrent();
-                    eox.currentLocationState = currentLocationState.CloneFromCurrent();
+                    // so they can be recreated
+                    eox.currentVehicleState = currentVehicleState.Clone();
+                    eox.currentLocationState = currentLocationState.Clone();
+                    eox.currentTripState = currentTripState.Clone();
+                    eox.dataDiagnosticState = dataDiagnosticState.Clone();
+                    eox.deviceMalfunctionState = deviceMalfunctionState.Clone();
 
-                    var c = currentVehicleState.Clone();
-                    var cc = currentLocationState.Clone();
+
 
                     // set the common parms
                     eox.commonParms = commonParms;
-
-
-
-
-                    lat = r.EndingLatitude;
-                    lng = r.EndingLongitude;
 
                     currDT = currDT.AddSeconds(intermediateInterval); // interval for intermediate events...
 
@@ -147,13 +144,6 @@ namespace ELDTestDataGenerator
             }
             return es;
 
-        }
-
-        private static int GetBearing(double lat, double lng, int currentBearing)
-        {
-            // plot a course roughly around the US
-
-            return 180;
         }
 
 

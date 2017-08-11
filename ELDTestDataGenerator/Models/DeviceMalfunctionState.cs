@@ -16,6 +16,19 @@ namespace ELDTestDataGenerator.Models
         public List<DeviceMalfunction> Malfunctions { get; set; }
 
         public bool HasCurrentMalfunction { get { return Malfunctions.Count > 0 ? true : false; } }
+
+        public DeviceMalfunctionState Clone()
+        {
+            DeviceMalfunctionState clone = new DeviceMalfunctionState();
+            clone = (DeviceMalfunctionState)this.MemberwiseClone();
+            clone.Malfunctions.Clear();
+            foreach (var d in this.Malfunctions)
+            {
+                DeviceMalfunction dm = (DeviceMalfunction)d.Clone();
+                clone.Malfunctions.Add(dm);
+            }
+            return clone;
+        }
     }
 
     public class DeviceMalfunction
@@ -32,5 +45,11 @@ namespace ELDTestDataGenerator.Models
             }
         }
 
+        public DeviceMalfunction Clone()
+        {
+            DeviceMalfunction clone = new DeviceMalfunction();
+            clone = (DeviceMalfunction)this.MemberwiseClone();
+            return clone;
+        }
     }
 }

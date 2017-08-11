@@ -163,6 +163,7 @@
     <Compile Include="Models\Segment.cs" />
     <Compile Include="Models\TestProfile.cs" />
     <Compile Include="Models\TransientOBDReadings.cs" />
+    <Compile Include="Models\TravelProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

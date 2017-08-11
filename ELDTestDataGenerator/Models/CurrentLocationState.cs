@@ -18,6 +18,40 @@ namespace ELDTestDataGenerator.Models
             this.PreviousLocation = new Location();
         }
 
+        // set defaults from profile
+        public CurrentLocationState(Models.TestProfile p)
+        {
+            this.CurrentLocation = new Location();
+            this.PreviousLocation = new Location();
+
+            // set the current and previous locations
+            Models.Location PrevLocation = new Models.Location();
+            Models.Location currLocation = new Models.Location();
+
+            currLocation.EngineHours = p.startingEngineHours;
+            currLocation.Latitude = p.travelProfile.startingLatitude;
+            currLocation.Longitude = p.travelProfile.startingLongitude;
+            currLocation.LocationRecordedDateTime = p.StartingDateTime;
+            currLocation.OdometerReading = p.startingOdometer;
+            currLocation.ReducedGPSPrecision = false;
+            currLocation.LocationRecordedDateTime = p.StartingDateTime;
+
+            PrevLocation.EngineHours = p.startingEngineHours;
+            PrevLocation.Latitude = p.travelProfile.startingLongitude;
+            PreviousLocation.Longitude = p.travelProfile.startingLongitude;
+            PrevLocation.LocationRecordedDateTime = p.StartingDateTime;
+            PrevLocation.OdometerReading = p.startingOdometer;
+            PrevLocation.ReducedGPSPrecision = false;
+            PreviousLocation.LocationRecordedDateTime = p.StartingDateTime;
+
+            this.CurrentLocation = currLocation;
+            this.PreviousLocation = PrevLocation;
+
+
+
+        }
+
+
         public double TimeFromPreviousToCurrentLocation { get {
                 if (PreviousLocation != null && CurrentLocation != null)
                 {
@@ -69,23 +103,13 @@ namespace ELDTestDataGenerator.Models
             this.CurrentLocation.ReducedGPSPrecision = PreviousLocation != null ? PreviousLocation.ReducedGPSPrecision : false;
         }
 
-        public CurrentLocationState CloneFromCurrent() {
-            CurrentLocationState cls = new CurrentLocationState();
-            cls.CurrentLocation = this.CurrentLocation.CloneFromCurrent();
-            cls.PreviousLocation = this.PreviousLocation.CloneFromCurrent();
-            
-
-
-            return cls;
-        }
 
         public CurrentLocationState Clone()
         {
-            CurrentLocationState cls = (CurrentLocationState)this.MemberwiseClone();
-            cls.CurrentLocation = this.CurrentLocation.CloneFromCurrent();
-            cls.PreviousLocation = this.PreviousLocation.CloneFromCurrent();
-
-
+            CurrentLocationState cls = new CurrentLocationState();
+            cls = (CurrentLocationState)this.MemberwiseClone();
+            cls.CurrentLocation = this.CurrentLocation.Clone();
+            cls.PreviousLocation = this.PreviousLocation.Clone();
 
             return cls;
         }
@@ -106,14 +130,9 @@ namespace ELDTestDataGenerator.Models
 
         public bool ReducedGPSPrecision { get; set; }
 
-        public Location CloneFromCurrent() {
+        public Location Clone() {
             Location loc = new Location();
-            loc.EngineHours = this.EngineHours;
-            loc.Latitude = this.Latitude;
-            loc.LocationRecordedDateTime = this.LocationRecordedDateTime;
-            loc.Longitude = this.Longitude;
-            loc.OdometerReading = this.OdometerReading;
-            loc.ReducedGPSPrecision = this.ReducedGPSPrecision;
+            loc = (Location)this.MemberwiseClone();
             return loc;
         }
 

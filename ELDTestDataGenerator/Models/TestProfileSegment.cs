@@ -15,8 +15,6 @@ namespace ELDTestDataGenerator.Models
 
         public int DurationSeconds { get; set; }
 
-        public int CompassBearing { get; set; }
-
         public string ActionId { get; set; }
 
         // collected for some events...

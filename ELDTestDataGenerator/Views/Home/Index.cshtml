@@ -2,16 +2,50 @@
     ViewBag.Title = "Home Page";
 }
 
+<style>
+    .main {
+        margin-top:15px;
+        font-size: 1.2em;
+    }
+</style>
+
 <div class="jumbotron">
     <h1>ELD Test Data</h1>
     <p class="lead">Generate test data for use on ELD device and for reporting</p>
 </div>
 
 <div class="row">
-    <div class="col-md-4">
-    </div>
-    <div class="col-md-4">
-    </div>
-    <div class="col-md-4">
+    <div class="col-md-12">
+        <div class="main">
+            The purpose of this tool is primarily to generate simulated OBD reading events (including GPS) based upon vehicle movement.
+            These simulations can then be passed to the domain objects to generate local or azure ELD events.
+        </div>
+        <div class="main">
+            An attempt was made to also send the corresponding "current states" that would be needed to create the events.  These current states may not 
+            always reflect your desired intent (exempt driver, etc.) but can be modified to suit your purposes.  As these states will change over the duration of
+            the simulated trip, representation of the current states <i>at the time</i> are sent along with each OBD simulated reading.
+        </div>
+        <div class="main">
+            The generator uses "test profiles" which define the variables necessary to support the simulation.  The test profiles are futher comprised of "segments" 
+            which specify the type and duration of activities within the simulation.  It's important to know that if you just want GPS tracks, and don't care about 
+            event setup, then you really only need to specify ZERO MPH (stopped) in a segment, or > ZERO MPH, which will generate intermediate tracking 
+            data every "PollingIntervalSeconds" interval (defined in the Test Profile). This will continue for the duration of the "DurationSeconds" value (defined in each segment).
+        </div>
+        <div class="main">
+            The map tracks are predefined and DO NOT follow roadways.  They form a polygonal path across the US, and make a complete circuit in 122 hours at 60 MPH. It is not necessary 
+            for this simulation to follow roadways.
+        </div>
+
+        <div class="main">
+            When we get to the point when we generate ELD events for these, please pay special attention to the following properties:
+            <ul>
+                <li>Device Id</li>
+                <li>Driver Id</li>
+                <li>VIN</li>
+            </ul>
+            Please choose artificial values which you know are NOT in use on a mobile device, otherwise the system will (eventually) sync your values to the device as a part of 
+            a normal sync process.  This could cause a significant degree of confusion.
+        </div>
+
     </div>
 </div>

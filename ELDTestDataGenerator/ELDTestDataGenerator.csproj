@@ -224,7 +224,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="GPSCalculator.cs" />
-    <Compile Include="GPSParms.cs" />
     <Compile Include="GPSResult.cs" />
     <Compile Include="Models\CommonParms.cs" />
     <Compile Include="Models\Constants.cs" />

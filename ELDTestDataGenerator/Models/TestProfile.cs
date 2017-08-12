@@ -47,7 +47,6 @@ namespace ELDTestDataGenerator.Models
 
             TestProfileSegment pseg = new TestProfileSegment();
             pseg.ActionId = "Driving";
-            pseg.CompassBearing = 180;
             pseg.MPH = 60;
             pseg.SegmentSeqNum = 10;
             pseg.DurationSeconds = 8 * 3600; // 8 hour default

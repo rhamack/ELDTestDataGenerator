@@ -28,9 +28,10 @@
             @Html.DisplayFor(modelItem => item.ProfileName)
         </td>
         <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.ProfileId }) |
             @Html.ActionLink("Segments", "Index", "TestProfileSegments", new { profileId = item.ProfileId }, null) |
-            @Html.ActionLink("Edit", "Edit", new { id=item.ProfileId }) |
-            @Html.ActionLink("Plot", "Plot", new { id = item.ProfileId }) 
+            @Html.ActionLink("Plot", "Plot", new { id = item.ProfileId }) |
+            @Html.ActionLink("JSON Download", "Download", new { id = item.ProfileId }) 
         </td>
     </tr>
 }

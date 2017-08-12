@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ELDTestDataGenerator.Data;
+using System.Text;
 
 namespace ELDTestDataGenerator.Controllers
 {
@@ -19,6 +20,34 @@ namespace ELDTestDataGenerator.Controllers
         {
             return View(db.TestProfiles.ToList());
         }
+
+        public ActionResult jsonToBrowser(string id) {
+
+            Models.EventSet es = GetEventSet(id);
+            string esJSON = es.ToSerializedJson();
+
+            return this.Content(esJSON, "application/json");
+
+        }
+
+        public FileContentResult Download(string id)
+        {
+
+            Models.EventSet es = GetEventSet(id);
+            string esJSON = es.ToSerializedJson();
+            byte[] contents = Encoding.ASCII.GetBytes(esJSON);
+
+            string fileName = string.Format("{0}.json", id);
+
+            FileContentResult result = new FileContentResult(contents, "application/json");
+            result.FileDownloadName = fileName;
+
+            return result;
+
+
+
+        }
+
 
         // GET: TestProfiles/Create
         public ActionResult Create()
@@ -115,6 +144,16 @@ namespace ELDTestDataGenerator.Controllers
 
         public ActionResult Plot(string id)
         {
+
+            Models.EventSet es = GetEventSet(id);
+
+
+            return View(es);
+        }
+
+
+        private Models.EventSet GetEventSet(string id)
+        {
             // get the profile and segments...
             Data.ELDTestDataEntities db = new ELDTestDataEntities();
             db.Configuration.LazyLoadingEnabled = false;
@@ -122,7 +161,8 @@ namespace ELDTestDataGenerator.Controllers
 
 
             Models.EventSet es = new Models.EventSet();
-            if (dbTestProfile != null) {
+            if (dbTestProfile != null)
+            {
                 // create the local current state objects
                 Models.TestProfile p = new Models.TestProfile();
                 p.DefaultCurrentTripState.BluetoothId = dbTestProfile.BluetoothId;
@@ -137,18 +177,18 @@ namespace ELDTestDataGenerator.Controllers
                 p.startingOdometer = dbTestProfile.StartingOdometer.Value;
                 p.travelProfile = new Models.TravelProfile();
 
-                foreach (var seg in dbTestProfile.TestProfileSegments) {
+                foreach (var seg in dbTestProfile.TestProfileSegments)
+                {
                     Models.TestProfileSegment tps = new Models.TestProfileSegment();
                     tps.ActionId = seg.ActionId;
-                    //tps.CommentAnnotation = seg.CommentAnnotation;
-                    //tps.CompassBearing = seg.
+                    tps.CommentAnnotation = seg.CommentAnnotation;
                     tps.DateOfCertifiedRecord = seg.DateOfCertifiedRecord;
                     tps.DriversLocationDesc = seg.DriversLocationDesc;
                     tps.DurationSeconds = seg.DurationSeconds.HasValue ? seg.DurationSeconds.Value : 0;
                     tps.MPH = seg.MPH.HasValue ? seg.MPH.Value : 0;
                     tps.ProfileId = seg.ProfileId;
                     tps.SegmentSeqNum = seg.SegmentSeqNum;
-                    
+
                     p.profileSegments.Add(tps);
                 }
 
@@ -158,7 +198,7 @@ namespace ELDTestDataGenerator.Controllers
                 Models.CurrentDriverState cds = new Models.CurrentDriverState();
                 cds.CarrierMultiDayBasis = dbTestProfile.CarrierMultiDayBasis;
                 cds.DeviceId = dbTestProfile.DeviceId;
-                cds.DriverDayStartHour = (byte) (dbTestProfile.Driver1DayStartHour.HasValue ? dbTestProfile.Driver1DayStartHour.Value : 0);
+                cds.DriverDayStartHour = (byte)(dbTestProfile.Driver1DayStartHour.HasValue ? dbTestProfile.Driver1DayStartHour.Value : 0);
                 cds.DriverFirstName = dbTestProfile.Driver1FirstName;
                 cds.DriverId = dbTestProfile.Driver1Id;
                 cds.DriverIsExempt = dbTestProfile.Driver1IsExempt;
@@ -175,16 +215,9 @@ namespace ELDTestDataGenerator.Controllers
                 p.DefaultCurrentTripState.Drivers.Add(cds);
 
                 es = EventGenerator.GenerateEvents(p);
+
             }
-
-
-            //Models.TestProfile p = new Models.TestProfile();
-            //p.LoadTripSegments();
-            //p.profileSegments[0].DurationSeconds = 40 * 3600; // 122 hours of driving at 60MPH will take us all the the way around...
-            //p.PollingIntervalSeconds = 3600; // each hour
-            //Models.EventSet es = EventGenerator.GenerateEvents(p);
-
-            return View(es);
+            return es;
         }
 
 

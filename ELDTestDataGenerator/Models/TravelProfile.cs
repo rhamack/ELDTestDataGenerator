@@ -58,6 +58,12 @@ namespace ELDTestDataGenerator.Models
                     if (lng <= -87.660)
                         newBearing = 288;
                     break;
+                case 288: // final leg
+                    // start the loop again 
+                    if (lat >= 48.724)
+                        newBearing = 180;
+                    break;
+
 
             }
 

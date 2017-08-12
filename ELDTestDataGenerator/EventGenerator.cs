@@ -10,7 +10,7 @@ namespace ELDTestDataGenerator
         public static Models.EventSet GenerateEvents(Models.TestProfile p)
         {
             Models.EventSet es = new Models.EventSet();
-
+            es.ProfileId = p.ProfileId;
 
             DateTimeOffset currDT = p.StartingDateTime;
 
@@ -20,7 +20,6 @@ namespace ELDTestDataGenerator
             Models.DataDiagnosticState dataDiagnosticState = new Models.DataDiagnosticState();    // TODO:
             Models.DeviceMalfunctionState deviceMalfunctionState = new Models.DeviceMalfunctionState(); //TODO:
             Models.CurrentTripState currentTripState = new Models.CurrentTripState(true);
-            Models.CommonParms commonParms = new Models.CommonParms();
 
             Models.TransientOBDReadings obd = new Models.TransientOBDReadings(p);
             obd.VIN = currentTripState.VIN;
@@ -33,17 +32,24 @@ namespace ELDTestDataGenerator
             double engineHours = p.startingEngineHours;
             int odometer = p.startingOdometer;
 
+
+
             foreach (var pseg in p.profileSegments)
             {
                 // start a clock, increment per 5 minutes...
                 DateTimeOffset segEnd = currDT.AddSeconds(pseg.DurationSeconds);
+
+                // we always add a record for a segment, but only add intermediate records
+                // when the vehicle is moving.
+
+                bool firstEntry = true;
+
                 do
                 {
 
                     // calc the new position and create the event objects
                     Models.EventObjects eox = new Models.EventObjects();
                     eox.IntendedEventName = pseg.ActionId;
-                    es.eventObjects.Add(eox);
 
                     // calculate the new position
                     if (pseg.MPH > 0)
@@ -60,6 +66,11 @@ namespace ELDTestDataGenerator
                         lng = r.EndingLongitude;
 
                     }
+
+                    if (firstEntry || pseg.MPH > 0) 
+                        es.eventObjects.Add(eox);
+
+
                     // add the interval to the engine hours
                     engineHours += (double)((double)polling_interval / (double)3600);
 
@@ -77,26 +88,48 @@ namespace ELDTestDataGenerator
                     if (pseg.MPH > 0)
                         currentVehicleState.VehicleIsMoving = true;
 
+                    currDT = currDT.AddSeconds(polling_interval); // interval for intermediate events...
+
+
+                    // create the common parameters in support of the events
+                    Models.CommonParms commonParms = new Models.CommonParms();
+                    commonParms.CommentAnnotation = pseg.CommentAnnotation;
+                    commonParms.DateOfCertifiedRecord = pseg.DateOfCertifiedRecord;
+                    commonParms.DriversLocationDesc = pseg.DriversLocationDesc;
+                    //commonParms.EventCode = ? // below
+                    commonParms.EventDataCheckValue = ""; // let the model do this
+                    commonParms.EventId = System.Guid.NewGuid().ToString();
+                    commonParms.RelatedEventId = commonParms.EventId;
+                    commonParms.EventRecordOriginCode = 1; // recorded by ELD
+                    commonParms.EventRecordStatusCode = 1; // active
+                    commonParms.EventSequenceNum = eox.SeqNum;
+                    commonParms.EventTimestamp = currDT;
+                    //commonParms.EventTypeCode = ?; // below
+
+                    /* the only event requiring code and type code is driver status change
+                     *  , EventEnums.DriverStatusChangeEventCode eventCode // 1 = off duty, 2 = sleeper berth, 3 = driving, 4 = on-duty not driving
+                        , EventEnums.EventRecordOrigin eventRecordOriginCode // 1 = automatically created by ELD, 2 = created by driver, 3 = requested by other, 4 = assumed from unidentified
+                     */
+
+
+
                     switch (pseg.ActionId)
                     {
                         case "DriverLogin":
+                            commonParms.EventTypeCode = 5;
                             currentVehicleState.CurrentEventCode = 4; // on duty not driving
                             currentVehicleState.CurrentSpecialDrivingCategoryCode = 0;
                             currentTripState.CurrentDriver.PersonalUseOfCMVInEffect = false;
                             break;
                         case "EngineStart":
+                            commonParms.EventTypeCode = 6;
                             currentVehicleState.CurrentEventCode = 4; // on duty not driving
                             currentVehicleState.CurrentSpecialDrivingCategoryCode = 0;
                             currentTripState.CurrentDriver.PersonalUseOfCMVInEffect = false;
                             break;
                         case "EngineShutdown":
+                            commonParms.EventTypeCode = 6;
                             currentVehicleState.CurrentEventCode = 4; // on duty not driving
-                            currentVehicleState.CurrentSpecialDrivingCategoryCode = 0;
-                            currentTripState.CurrentDriver.PersonalUseOfCMVInEffect = false;
-                            break;
-
-                        case "PreDrivingMovement":
-                            //currentVehicleState.CurrentEventCode = 4; // whatever it was before
                             currentVehicleState.CurrentSpecialDrivingCategoryCode = 0;
                             currentTripState.CurrentDriver.PersonalUseOfCMVInEffect = false;
                             break;
@@ -115,17 +148,34 @@ namespace ELDTestDataGenerator
                             currentVehicleState.CurrentSpecialDrivingCategoryCode = 2;
                             currentTripState.CurrentDriver.PersonalUseOfCMVInEffect = false;
                             break;
-                        case "StopMoving":
-                            //currentVehicleState.CurrentEventCode = 3; // whatever it was before
+                        case "OnDutyNotDriving":
+                            currentVehicleState.CurrentEventCode = 4; // on duty
+                            currentVehicleState.CurrentSpecialDrivingCategoryCode = 0;
+                            currentTripState.CurrentDriver.PersonalUseOfCMVInEffect = false;
+                            break;
+                        case "OffDuty":
+                            currentVehicleState.CurrentEventCode = 1; // off duty
+                            currentVehicleState.CurrentSpecialDrivingCategoryCode = 0;
+                            currentTripState.CurrentDriver.PersonalUseOfCMVInEffect = false;
+                            break;
+                        case "SleeperBerth":
+                            currentVehicleState.CurrentEventCode = 2; // sleeper berth
                             currentVehicleState.CurrentSpecialDrivingCategoryCode = 0;
                             currentTripState.CurrentDriver.PersonalUseOfCMVInEffect = false;
                             break;
 
+
                     }
+
+                    if (firstEntry)
+                        commonParms.EventTypeCode = currentVehicleState.CurrentEventCode;
+                    else
+                        commonParms.EventTypeCode = 2; // intermediate event
+
 
 
                     // clone the current states into the eventobjects
-                    // so they can be recreated
+                   // so they can be recreated
                     eox.currentVehicleState = currentVehicleState.Clone();
                     eox.currentLocationState = currentLocationState.Clone();
                     eox.currentTripState = currentTripState.Clone();
@@ -133,10 +183,10 @@ namespace ELDTestDataGenerator
                     eox.deviceMalfunctionState = deviceMalfunctionState.Clone();
 
                     // set the common parms
-                    eox.commonParms = commonParms; // TODO: clone
+                    eox.commonParms = commonParms; 
 
-                    currDT = currDT.AddSeconds(polling_interval); // interval for intermediate events...
 
+                    firstEntry = false;
 
                 } while (currDT <= segEnd);
             }

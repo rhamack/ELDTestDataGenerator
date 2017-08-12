@@ -7,33 +7,27 @@ namespace ELDTestDataGenerator
 {
     public class EventGenerator
     {
-        public static Models.EventSet GenerateEvents(string profileId)
+        public static Models.EventSet GenerateEvents(Models.TestProfile p)
         {
             Models.EventSet es = new Models.EventSet();
 
 
-            // default
-            Models.TestProfile p = new Models.TestProfile();
-            p.LoadTripSegments();
-
             DateTimeOffset currDT = p.StartingDateTime;
 
-            bool setDefaults = true;
-
-            // set the current states
+            // set the initial current states
             Models.CurrentLocationState currentLocationState = new Models.CurrentLocationState(p); // done
             Models.CurrentVehicleState currentVehicleState = new Models.CurrentVehicleState(p);    // done
             Models.DataDiagnosticState dataDiagnosticState = new Models.DataDiagnosticState();    // TODO:
             Models.DeviceMalfunctionState deviceMalfunctionState = new Models.DeviceMalfunctionState(); //TODO:
-            Models.CurrentTripState currentTripState = new Models.CurrentTripState(setDefaults);
+            Models.CurrentTripState currentTripState = new Models.CurrentTripState(true);
             Models.CommonParms commonParms = new Models.CommonParms();
 
             Models.TransientOBDReadings obd = new Models.TransientOBDReadings(p);
             obd.VIN = currentTripState.VIN;
 
-            int intermediateInterval = 300; // 5 minutes?
-            int currentBearing = 180;
+            int polling_interval = p.PollingIntervalSeconds; // 5 minutes?
 
+            int currentBearing = p.travelProfile.startingCompassBearing;
             double lat = p.travelProfile.startingLatitude;
             double lng = p.travelProfile.startingLongitude;
             double engineHours = p.startingEngineHours;
@@ -48,15 +42,16 @@ namespace ELDTestDataGenerator
 
                     // calc the new position and create the event objects
                     Models.EventObjects eox = new Models.EventObjects();
-                    eox.IntendedEventName = pseg.Action;
+                    eox.IntendedEventName = pseg.ActionId;
                     es.eventObjects.Add(eox);
 
                     // calculate the new position
-                    currentBearing = p.travelProfile.GetBearing(lat, lng, currentBearing);
                     if (pseg.MPH > 0)
                     {
+                        currentBearing = p.travelProfile.GetBearing(lat, lng, currentBearing); // get the bearing from the travel profile
+
                         // moving, so calc new position
-                        var r = GPSCalculator.CalcPosition(lat, lng, currentBearing, pseg.MPH, intermediateInterval);
+                        var r = GPSCalculator.CalcPosition(lat, lng, currentBearing, pseg.MPH, polling_interval);
 
                         // accumulate the trip values
                         odometer += (int)r.MilesTraveled;
@@ -66,7 +61,7 @@ namespace ELDTestDataGenerator
 
                     }
                     // add the interval to the engine hours
-                    engineHours += (double)((double)intermediateInterval / (double)3600);
+                    engineHours += (double)((double)polling_interval / (double)3600);
 
                     var obdx = new Models.TransientOBDReadings() { Latitude = lat, Longitude = lng, SpeedometerReading = (byte)pseg.MPH, VIN=currentTripState.VIN , OdometerReading = odometer, EngineHours = engineHours};
                     eox.transientOBDReadings = obdx;
@@ -82,7 +77,7 @@ namespace ELDTestDataGenerator
                     if (pseg.MPH > 0)
                         currentVehicleState.VehicleIsMoving = true;
 
-                    switch (pseg.Action)
+                    switch (pseg.ActionId)
                     {
                         case "DriverLogin":
                             currentVehicleState.CurrentEventCode = 4; // on duty not driving
@@ -90,6 +85,11 @@ namespace ELDTestDataGenerator
                             currentTripState.CurrentDriver.PersonalUseOfCMVInEffect = false;
                             break;
                         case "EngineStart":
+                            currentVehicleState.CurrentEventCode = 4; // on duty not driving
+                            currentVehicleState.CurrentSpecialDrivingCategoryCode = 0;
+                            currentTripState.CurrentDriver.PersonalUseOfCMVInEffect = false;
+                            break;
+                        case "EngineShutdown":
                             currentVehicleState.CurrentEventCode = 4; // on duty not driving
                             currentVehicleState.CurrentSpecialDrivingCategoryCode = 0;
                             currentTripState.CurrentDriver.PersonalUseOfCMVInEffect = false;
@@ -132,12 +132,10 @@ namespace ELDTestDataGenerator
                     eox.dataDiagnosticState = dataDiagnosticState.Clone();
                     eox.deviceMalfunctionState = deviceMalfunctionState.Clone();
 
-
-
                     // set the common parms
-                    eox.commonParms = commonParms;
+                    eox.commonParms = commonParms; // TODO: clone
 
-                    currDT = currDT.AddSeconds(intermediateInterval); // interval for intermediate events...
+                    currDT = currDT.AddSeconds(polling_interval); // interval for intermediate events...
 
 
                 } while (currDT <= segEnd);

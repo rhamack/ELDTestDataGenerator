@@ -12,11 +12,14 @@ namespace ELDTestDataGenerator.Controllers
 
         public ActionResult Test() {
 
-            Models.EventSet es = EventGenerator.GenerateEvents("test");
-
-            return View(es);
+            // default
+            return View(getDefaultEventSet());
         }
 
+        public ActionResult KML() {
+
+            return this.Content(getDefaultEventSet().ToKML(), "application/vnd.google-earth.kml+xml");
+        }
 
 
         public ActionResult Index()
@@ -38,5 +41,16 @@ namespace ELDTestDataGenerator.Controllers
 
             return View();
         }
+
+        private Models.EventSet getDefaultEventSet() {
+            Models.TestProfile p = new Models.TestProfile();
+            p.LoadTripSegments();
+            p.profileSegments[0].DurationSeconds = 122 * 3600; // 122 hours of driving at 60MPH will take us all the the way around...
+            p.PollingIntervalSeconds = 3600; // each hour
+            Models.EventSet es = EventGenerator.GenerateEvents(p);
+
+            return es;
+        }
+
     }
 }

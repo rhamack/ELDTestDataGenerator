@@ -14,7 +14,7 @@ namespace ELDTestDataGenerator.Models
 
         public DateTimeOffset StartingDateTime { get; set; }
 
-        public List<ProfileSegment> profileSegments { get; set; }
+        public List<TestProfileSegment> profileSegments { get; set; }
 
         public double startingEngineHours { get; set; }
 
@@ -22,15 +22,22 @@ namespace ELDTestDataGenerator.Models
 
         public TravelProfile travelProfile { get; set; }
 
+        public int PollingIntervalSeconds { get; set; }
+
+        public CurrentTripState DefaultCurrentTripState { get; set; }
+
         public TestProfile() {
             startingEngineHours = 1200;
             startingOdometer = 55000;
 
             // start at 8AM today
             StartingDateTime = new DateTimeOffset(DateTime.Today, new TimeSpan(-7, 0, 0)).AddHours(8);
+            PollingIntervalSeconds = 300;
 
-            profileSegments = new List<ProfileSegment>();
+            profileSegments = new List<TestProfileSegment>();
             travelProfile = new TravelProfile();
+            DefaultCurrentTripState = new CurrentTripState();
+
         }
 
 
@@ -38,12 +45,13 @@ namespace ELDTestDataGenerator.Models
         public void LoadTripSegments() {
             // driving for 8 hours
 
-            ProfileSegment pseg = new ProfileSegment();
-            pseg.Action = "Driving";
+            TestProfileSegment pseg = new TestProfileSegment();
+            pseg.ActionId = "Driving";
             pseg.CompassBearing = 180;
             pseg.MPH = 60;
-            pseg.ElementSeqNum = 10;
-            pseg.DurationSeconds = 8 * 3600; // 8 hours
+            pseg.SegmentSeqNum = 10;
+            pseg.DurationSeconds = 8 * 3600; // 8 hour default
+
             this.profileSegments.Add(pseg);
         }
 

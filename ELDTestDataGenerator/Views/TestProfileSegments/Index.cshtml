@@ -1,0 +1,53 @@
+﻿@model IEnumerable<ELDTestDataGenerator.Data.TestProfileSegment>
+
+@{
+    ViewBag.Title = "Index";
+    string profileId = (string)ViewBag.ProfileId;
+}
+
+<h2>Segments for Test Profile: @profileId </h2>
+@Html.ActionLink("Return to Profile List", "Index", "TestProfiles", null, null)
+
+
+<p>
+    @Html.ActionLink("Create New", "Create", new { profileId = profileId})
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.SegmentSeqNum)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ActionId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DurationSeconds)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MPH)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.SegmentSeqNum)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ActionId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DurationSeconds)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MPH)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

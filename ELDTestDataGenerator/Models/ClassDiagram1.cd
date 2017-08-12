@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="ELDTestDataGenerator.Models.TestProfileSegment">
+    <Position X="1" Y="4.25" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAEAAAAgAAAAAAgAgAAAAAAABAAAAhAQ=</HashCode>
+      <FileName>Models\TestProfileSegment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELDTestDataGenerator.Models.CommonParms">
+    <Position X="1" Y="7.25" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAgAAQQAAAAAAKAAAAAEQAAAAAAAAABgCAABAA=</HashCode>
+      <FileName>Models\CommonParms.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELDTestDataGenerator.Models.CurrentTripState">
+    <Position X="5.5" Y="0.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAQAAAAEAACAAAiAAAAAAAAAAAAAACAAQAAhA=</HashCode>
+      <FileName>Models\CurrentTripState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELDTestDataGenerator.Models.CurrentDriverState">
+    <Position X="5.5" Y="4.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>ICCAAAIAQgAAARAAAAAAAAAAAAQIAAAAUAEAAAEAABA=</HashCode>
+      <FileName>Models\CurrentDriverState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELDTestDataGenerator.Models.TestProfile">
+    <Position X="1" Y="0.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>MAAAAAAEAAAAEAAAAAAAIAIIAAAAAAAAAgAAAAAAgAQ=</HashCode>
+      <FileName>Models\TestProfile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

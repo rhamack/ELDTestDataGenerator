@@ -1,0 +1,489 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ELDTestDataModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Actions">
+          <Key>
+            <PropertyRef Name="ActionId" />
+          </Key>
+          <Property Name="ActionId" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ActionDesc" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="CountryCode" />
+          </Key>
+          <Property Name="CountryCode" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="CountryName" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CountryState">
+          <Key>
+            <PropertyRef Name="CountryCode" />
+            <PropertyRef Name="StateCode" />
+          </Key>
+          <Property Name="CountryCode" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="StateCode" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="StateName" Type="varchar" MaxLength="50" />
+          <Property Name="StateType" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="EventRecordOrigin">
+          <Key>
+            <PropertyRef Name="EventRecordOriginCode" />
+          </Key>
+          <Property Name="EventRecordOriginCode" Type="tinyint" Nullable="false" />
+          <Property Name="EventRecordOriginDesc" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="EventRecordStatus">
+          <Key>
+            <PropertyRef Name="EventRecordStatusCode" />
+          </Key>
+          <Property Name="EventRecordStatusCode" Type="tinyint" Nullable="false" />
+          <Property Name="EventRecordStatusDesc" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="EventStatus">
+          <Key>
+            <PropertyRef Name="EventTypeCode" />
+            <PropertyRef Name="EventCode" />
+          </Key>
+          <Property Name="EventTypeCode" Type="tinyint" Nullable="false" />
+          <Property Name="EventCode" Type="tinyint" Nullable="false" />
+          <Property Name="EventDesc" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="EventType">
+          <Key>
+            <PropertyRef Name="EventTypeCode" />
+          </Key>
+          <Property Name="EventTypeCode" Type="tinyint" Nullable="false" />
+          <Property Name="EventTypeDesc" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="TestProfile">
+          <Key>
+            <PropertyRef Name="ProfileId" />
+          </Key>
+          <Property Name="ProfileId" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ProfileName" Type="varchar" MaxLength="50" />
+          <Property Name="PollingIntervalSeconds" Type="int" />
+          <Property Name="StartingDateTime" Type="datetimeoffset" Precision="7" />
+          <Property Name="StartingEngineHours" Type="float" />
+          <Property Name="StartingOdometer" Type="int" />
+          <Property Name="CarrierUSDOTNumber" Type="varchar" MaxLength="50" />
+          <Property Name="BluetoothId" Type="varchar" MaxLength="50" />
+          <Property Name="CMVUnitNumber" Type="varchar" MaxLength="50" />
+          <Property Name="CMVTrailerNumbers" Type="varchar" MaxLength="50" />
+          <Property Name="ShippingDocumentNumber" Type="varchar" MaxLength="50" />
+          <Property Name="VIN" Type="varchar" MaxLength="50" />
+          <Property Name="CarrierMultiDayBasis" Type="varchar" MaxLength="50" />
+          <Property Name="DeviceId" Type="varchar" MaxLength="50" />
+          <Property Name="CurrentDriverId" Type="varchar" MaxLength="50" />
+          <Property Name="Driver1Id" Type="varchar" MaxLength="50" />
+          <Property Name="Driver1FirstName" Type="varchar" MaxLength="50" />
+          <Property Name="Driver1LastName" Type="varchar" MaxLength="50" />
+          <Property Name="Driver1IsExempt" Type="bit" Nullable="false" />
+          <Property Name="Driver1DayStartHour" Type="int" />
+          <Property Name="Driver1DriverLicenseIssuingStateCode" Type="varchar" MaxLength="50" />
+          <Property Name="Driver1DriverLicenseNumber" Type="varchar" MaxLength="50" />
+          <Property Name="Driver1PersonalUseOfCMVAllowed" Type="bit" Nullable="false" />
+          <Property Name="Driver1YardMovesAllowed" Type="bit" Nullable="false" />
+          <Property Name="Driver1TimeZoneId" Type="varchar" MaxLength="50" />
+          <Property Name="Driver2Id" Type="varchar" MaxLength="50" />
+          <Property Name="Driver2FirstName" Type="varchar" MaxLength="50" />
+          <Property Name="Driver2LastName" Type="varchar" MaxLength="50" />
+          <Property Name="Driver2IsExempt" Type="bit" Nullable="false" />
+          <Property Name="Driver2DayStartHour" Type="int" />
+          <Property Name="Driver2DriverLicenseIssuingStateCode" Type="varchar" MaxLength="50" />
+          <Property Name="Driver2DriverLicenseNumber" Type="varchar" MaxLength="50" />
+          <Property Name="Driver2YardMovesAllowed" Type="bit" Nullable="false" />
+          <Property Name="Driver2PersonalUseOfCMVAllowed" Type="bit" Nullable="false" />
+          <Property Name="Driver2TimeZoneId" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TestProfileSegment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProfileId" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="SegmentSeqNum" Type="int" Nullable="false" />
+          <Property Name="ActionId" Type="varchar" MaxLength="50" />
+          <Property Name="CommentAnnotation" Type="varchar" MaxLength="50" />
+          <Property Name="DateOfCertifiedRecord" Type="datetime" />
+          <Property Name="DriversLocationDesc" Type="varchar" MaxLength="50" />
+          <Property Name="DurationSeconds" Type="int" />
+          <Property Name="MPH" Type="int" />
+        </EntityType>
+        <EntityType Name="TimeZone">
+          <Key>
+            <PropertyRef Name="TimeZoneId" />
+          </Key>
+          <Property Name="TimeZoneId" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="TimeZoneDesc" Type="varchar" MaxLength="150" />
+          <Property Name="StandardOffset" Type="int" />
+        </EntityType>
+        <Association Name="FK_EventStatus_EventType">
+          <End Role="EventType" Type="Self.EventType" Multiplicity="1" />
+          <End Role="EventStatus" Type="Self.EventStatus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EventType">
+              <PropertyRef Name="EventTypeCode" />
+            </Principal>
+            <Dependent Role="EventStatus">
+              <PropertyRef Name="EventTypeCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TestProfileSegment_TestProfile">
+          <End Role="TestProfile" Type="Self.TestProfile" Multiplicity="1" />
+          <End Role="TestProfileSegment" Type="Self.TestProfileSegment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TestProfile">
+              <PropertyRef Name="ProfileId" />
+            </Principal>
+            <Dependent Role="TestProfileSegment">
+              <PropertyRef Name="ProfileId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ELDTestDataModelStoreContainer">
+          <EntitySet Name="Actions" EntityType="Self.Actions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Country" EntityType="Self.Country" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CountryState" EntityType="Self.CountryState" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EventRecordOrigin" EntityType="Self.EventRecordOrigin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EventRecordStatus" EntityType="Self.EventRecordStatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EventStatus" EntityType="Self.EventStatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EventType" EntityType="Self.EventType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TestProfile" EntityType="Self.TestProfile" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TestProfileSegment" EntityType="Self.TestProfileSegment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TimeZone" EntityType="Self.TimeZone" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_EventStatus_EventType" Association="Self.FK_EventStatus_EventType">
+            <End Role="EventType" EntitySet="EventType" />
+            <End Role="EventStatus" EntitySet="EventStatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TestProfileSegment_TestProfile" Association="Self.FK_TestProfileSegment_TestProfile">
+            <End Role="TestProfile" EntitySet="TestProfile" />
+            <End Role="TestProfileSegment" EntitySet="TestProfileSegment" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ELDTestDataModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="ELDTestDataEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Countries" EntityType="ELDTestDataModel.Country" />
+          <EntitySet Name="CountryStates" EntityType="ELDTestDataModel.CountryState" />
+          <EntitySet Name="EventRecordOrigins" EntityType="ELDTestDataModel.EventRecordOrigin" />
+          <EntitySet Name="EventRecordStatus" EntityType="ELDTestDataModel.EventRecordStatu" />
+          <EntitySet Name="EventStatus" EntityType="ELDTestDataModel.EventStatu" />
+          <EntitySet Name="EventTypes" EntityType="ELDTestDataModel.EventType" />
+          <AssociationSet Name="FK_EventStatus_EventType" Association="ELDTestDataModel.FK_EventStatus_EventType">
+            <End Role="EventType" EntitySet="EventTypes" />
+            <End Role="EventStatu" EntitySet="EventStatus" />
+          </AssociationSet>
+          <EntitySet Name="TimeZones" EntityType="ELDTestDataModel.TimeZone" />
+          <EntitySet Name="Actions" EntityType="ELDTestDataModel.Action" />
+          <EntitySet Name="TestProfiles" EntityType="ELDTestDataModel.TestProfile" />
+          <EntitySet Name="TestProfileSegments" EntityType="ELDTestDataModel.TestProfileSegment" />
+          <AssociationSet Name="FK_TestProfileSegment_TestProfile" Association="ELDTestDataModel.FK_TestProfileSegment_TestProfile">
+            <End Role="TestProfile" EntitySet="TestProfiles" />
+            <End Role="TestProfileSegment" EntitySet="TestProfileSegments" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="CountryCode" />
+          </Key>
+          <Property Name="CountryCode" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="CountryName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="CountryState">
+          <Key>
+            <PropertyRef Name="CountryCode" />
+            <PropertyRef Name="StateCode" />
+          </Key>
+          <Property Name="CountryCode" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="StateCode" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="StateName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="StateType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="EventRecordOrigin">
+          <Key>
+            <PropertyRef Name="EventRecordOriginCode" />
+          </Key>
+          <Property Name="EventRecordOriginCode" Type="Byte" Nullable="false" />
+          <Property Name="EventRecordOriginDesc" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="EventRecordStatu">
+          <Key>
+            <PropertyRef Name="EventRecordStatusCode" />
+          </Key>
+          <Property Name="EventRecordStatusCode" Type="Byte" Nullable="false" />
+          <Property Name="EventRecordStatusDesc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="EventStatu">
+          <Key>
+            <PropertyRef Name="EventTypeCode" />
+            <PropertyRef Name="EventCode" />
+          </Key>
+          <Property Name="EventTypeCode" Type="Byte" Nullable="false" />
+          <Property Name="EventCode" Type="Byte" Nullable="false" />
+          <Property Name="EventDesc" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="EventType" Relationship="ELDTestDataModel.FK_EventStatus_EventType" FromRole="EventStatu" ToRole="EventType" />
+        </EntityType>
+        <EntityType Name="EventType">
+          <Key>
+            <PropertyRef Name="EventTypeCode" />
+          </Key>
+          <Property Name="EventTypeCode" Type="Byte" Nullable="false" />
+          <Property Name="EventTypeDesc" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="EventStatus" Relationship="ELDTestDataModel.FK_EventStatus_EventType" FromRole="EventType" ToRole="EventStatu" />
+        </EntityType>
+        <Association Name="FK_EventStatus_EventType">
+          <End Type="ELDTestDataModel.EventType" Role="EventType" Multiplicity="1" />
+          <End Type="ELDTestDataModel.EventStatu" Role="EventStatu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EventType">
+              <PropertyRef Name="EventTypeCode" />
+            </Principal>
+            <Dependent Role="EventStatu">
+              <PropertyRef Name="EventTypeCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="TimeZone">
+          <Key>
+            <PropertyRef Name="TimeZoneId" />
+          </Key>
+          <Property Name="TimeZoneId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TimeZoneDesc" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="StandardOffset" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Action">
+          <Key>
+            <PropertyRef Name="ActionId" />
+          </Key>
+          <Property Name="ActionId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ActionDesc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="TestProfile">
+          <Key>
+            <PropertyRef Name="ProfileId" />
+          </Key>
+          <Property Name="ProfileId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ProfileName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PollingIntervalSeconds" Type="Int32" />
+          <Property Name="StartingDateTime" Type="DateTimeOffset" Precision="7" />
+          <Property Name="StartingEngineHours" Type="Double" />
+          <Property Name="StartingOdometer" Type="Int32" />
+          <Property Name="CarrierUSDOTNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BluetoothId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CMVUnitNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CMVTrailerNumbers" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ShippingDocumentNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="VIN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CarrierMultiDayBasis" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DeviceId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CurrentDriverId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Driver1Id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Driver1FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Driver1LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Driver1IsExempt" Type="Boolean" Nullable="false" />
+          <Property Name="Driver1DayStartHour" Type="Int32" />
+          <Property Name="Driver1DriverLicenseIssuingStateCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Driver1DriverLicenseNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Driver1PersonalUseOfCMVAllowed" Type="Boolean" Nullable="false" />
+          <Property Name="Driver1YardMovesAllowed" Type="Boolean" Nullable="false" />
+          <Property Name="Driver1TimeZoneId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Driver2Id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Driver2FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Driver2LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Driver2IsExempt" Type="Boolean" Nullable="false" />
+          <Property Name="Driver2DayStartHour" Type="Int32" />
+          <Property Name="Driver2DriverLicenseIssuingStateCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Driver2DriverLicenseNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Driver2YardMovesAllowed" Type="Boolean" Nullable="false" />
+          <Property Name="Driver2PersonalUseOfCMVAllowed" Type="Boolean" Nullable="false" />
+          <Property Name="Driver2TimeZoneId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TestProfileSegments" Relationship="ELDTestDataModel.FK_TestProfileSegment_TestProfile" FromRole="TestProfile" ToRole="TestProfileSegment" />
+        </EntityType>
+        <EntityType Name="TestProfileSegment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProfileId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SegmentSeqNum" Type="Int32" Nullable="false" />
+          <Property Name="ActionId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CommentAnnotation" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DateOfCertifiedRecord" Type="DateTime" Precision="3" />
+          <Property Name="DriversLocationDesc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DurationSeconds" Type="Int32" />
+          <Property Name="MPH" Type="Int32" />
+          <NavigationProperty Name="TestProfile" Relationship="ELDTestDataModel.FK_TestProfileSegment_TestProfile" FromRole="TestProfileSegment" ToRole="TestProfile" />
+        </EntityType>
+        <Association Name="FK_TestProfileSegment_TestProfile">
+          <End Type="ELDTestDataModel.TestProfile" Role="TestProfile" Multiplicity="1" />
+          <End Type="ELDTestDataModel.TestProfileSegment" Role="TestProfileSegment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TestProfile">
+              <PropertyRef Name="ProfileId" />
+            </Principal>
+            <Dependent Role="TestProfileSegment">
+              <PropertyRef Name="ProfileId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ELDTestDataModelStoreContainer" CdmEntityContainer="ELDTestDataEntities">
+          <EntitySetMapping Name="Countries">
+            <EntityTypeMapping TypeName="ELDTestDataModel.Country">
+              <MappingFragment StoreEntitySet="Country">
+                <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+                <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CountryStates">
+            <EntityTypeMapping TypeName="ELDTestDataModel.CountryState">
+              <MappingFragment StoreEntitySet="CountryState">
+                <ScalarProperty Name="StateType" ColumnName="StateType" />
+                <ScalarProperty Name="StateName" ColumnName="StateName" />
+                <ScalarProperty Name="StateCode" ColumnName="StateCode" />
+                <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EventRecordOrigins">
+            <EntityTypeMapping TypeName="ELDTestDataModel.EventRecordOrigin">
+              <MappingFragment StoreEntitySet="EventRecordOrigin">
+                <ScalarProperty Name="EventRecordOriginDesc" ColumnName="EventRecordOriginDesc" />
+                <ScalarProperty Name="EventRecordOriginCode" ColumnName="EventRecordOriginCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EventRecordStatus">
+            <EntityTypeMapping TypeName="ELDTestDataModel.EventRecordStatu">
+              <MappingFragment StoreEntitySet="EventRecordStatus">
+                <ScalarProperty Name="EventRecordStatusDesc" ColumnName="EventRecordStatusDesc" />
+                <ScalarProperty Name="EventRecordStatusCode" ColumnName="EventRecordStatusCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EventStatus">
+            <EntityTypeMapping TypeName="ELDTestDataModel.EventStatu">
+              <MappingFragment StoreEntitySet="EventStatus">
+                <ScalarProperty Name="EventDesc" ColumnName="EventDesc" />
+                <ScalarProperty Name="EventCode" ColumnName="EventCode" />
+                <ScalarProperty Name="EventTypeCode" ColumnName="EventTypeCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EventTypes">
+            <EntityTypeMapping TypeName="ELDTestDataModel.EventType">
+              <MappingFragment StoreEntitySet="EventType">
+                <ScalarProperty Name="EventTypeDesc" ColumnName="EventTypeDesc" />
+                <ScalarProperty Name="EventTypeCode" ColumnName="EventTypeCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TimeZones">
+            <EntityTypeMapping TypeName="ELDTestDataModel.TimeZone">
+              <MappingFragment StoreEntitySet="TimeZone">
+                <ScalarProperty Name="StandardOffset" ColumnName="StandardOffset" />
+                <ScalarProperty Name="TimeZoneDesc" ColumnName="TimeZoneDesc" />
+                <ScalarProperty Name="TimeZoneId" ColumnName="TimeZoneId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Actions">
+            <EntityTypeMapping TypeName="ELDTestDataModel.Action">
+              <MappingFragment StoreEntitySet="Actions">
+                <ScalarProperty Name="ActionDesc" ColumnName="ActionDesc" />
+                <ScalarProperty Name="ActionId" ColumnName="ActionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TestProfiles">
+            <EntityTypeMapping TypeName="ELDTestDataModel.TestProfile">
+              <MappingFragment StoreEntitySet="TestProfile">
+                <ScalarProperty Name="Driver2TimeZoneId" ColumnName="Driver2TimeZoneId" />
+                <ScalarProperty Name="Driver2PersonalUseOfCMVAllowed" ColumnName="Driver2PersonalUseOfCMVAllowed" />
+                <ScalarProperty Name="Driver2YardMovesAllowed" ColumnName="Driver2YardMovesAllowed" />
+                <ScalarProperty Name="Driver2DriverLicenseNumber" ColumnName="Driver2DriverLicenseNumber" />
+                <ScalarProperty Name="Driver2DriverLicenseIssuingStateCode" ColumnName="Driver2DriverLicenseIssuingStateCode" />
+                <ScalarProperty Name="Driver2DayStartHour" ColumnName="Driver2DayStartHour" />
+                <ScalarProperty Name="Driver2IsExempt" ColumnName="Driver2IsExempt" />
+                <ScalarProperty Name="Driver2LastName" ColumnName="Driver2LastName" />
+                <ScalarProperty Name="Driver2FirstName" ColumnName="Driver2FirstName" />
+                <ScalarProperty Name="Driver2Id" ColumnName="Driver2Id" />
+                <ScalarProperty Name="Driver1TimeZoneId" ColumnName="Driver1TimeZoneId" />
+                <ScalarProperty Name="Driver1YardMovesAllowed" ColumnName="Driver1YardMovesAllowed" />
+                <ScalarProperty Name="Driver1PersonalUseOfCMVAllowed" ColumnName="Driver1PersonalUseOfCMVAllowed" />
+                <ScalarProperty Name="Driver1DriverLicenseNumber" ColumnName="Driver1DriverLicenseNumber" />
+                <ScalarProperty Name="Driver1DriverLicenseIssuingStateCode" ColumnName="Driver1DriverLicenseIssuingStateCode" />
+                <ScalarProperty Name="Driver1DayStartHour" ColumnName="Driver1DayStartHour" />
+                <ScalarProperty Name="Driver1IsExempt" ColumnName="Driver1IsExempt" />
+                <ScalarProperty Name="Driver1LastName" ColumnName="Driver1LastName" />
+                <ScalarProperty Name="Driver1FirstName" ColumnName="Driver1FirstName" />
+                <ScalarProperty Name="Driver1Id" ColumnName="Driver1Id" />
+                <ScalarProperty Name="CurrentDriverId" ColumnName="CurrentDriverId" />
+                <ScalarProperty Name="DeviceId" ColumnName="DeviceId" />
+                <ScalarProperty Name="CarrierMultiDayBasis" ColumnName="CarrierMultiDayBasis" />
+                <ScalarProperty Name="VIN" ColumnName="VIN" />
+                <ScalarProperty Name="ShippingDocumentNumber" ColumnName="ShippingDocumentNumber" />
+                <ScalarProperty Name="CMVTrailerNumbers" ColumnName="CMVTrailerNumbers" />
+                <ScalarProperty Name="CMVUnitNumber" ColumnName="CMVUnitNumber" />
+                <ScalarProperty Name="BluetoothId" ColumnName="BluetoothId" />
+                <ScalarProperty Name="CarrierUSDOTNumber" ColumnName="CarrierUSDOTNumber" />
+                <ScalarProperty Name="StartingOdometer" ColumnName="StartingOdometer" />
+                <ScalarProperty Name="StartingEngineHours" ColumnName="StartingEngineHours" />
+                <ScalarProperty Name="StartingDateTime" ColumnName="StartingDateTime" />
+                <ScalarProperty Name="PollingIntervalSeconds" ColumnName="PollingIntervalSeconds" />
+                <ScalarProperty Name="ProfileName" ColumnName="ProfileName" />
+                <ScalarProperty Name="ProfileId" ColumnName="ProfileId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TestProfileSegments">
+            <EntityTypeMapping TypeName="ELDTestDataModel.TestProfileSegment">
+              <MappingFragment StoreEntitySet="TestProfileSegment">
+                <ScalarProperty Name="MPH" ColumnName="MPH" />
+                <ScalarProperty Name="DurationSeconds" ColumnName="DurationSeconds" />
+                <ScalarProperty Name="DriversLocationDesc" ColumnName="DriversLocationDesc" />
+                <ScalarProperty Name="DateOfCertifiedRecord" ColumnName="DateOfCertifiedRecord" />
+                <ScalarProperty Name="CommentAnnotation" ColumnName="CommentAnnotation" />
+                <ScalarProperty Name="ActionId" ColumnName="ActionId" />
+                <ScalarProperty Name="SegmentSeqNum" ColumnName="SegmentSeqNum" />
+                <ScalarProperty Name="ProfileId" ColumnName="ProfileId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

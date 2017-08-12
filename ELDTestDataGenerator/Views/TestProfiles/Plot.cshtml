@@ -1,0 +1,72 @@
+﻿@model ELDTestDataGenerator.Models.EventSet
+@{
+    ViewBag.Title = "Travel Plot";
+}
+
+
+<h2>Travel Plot</h2>
+<div id="map-canvas" style="height:600px;"></div>
+
+
+@section localStyles {
+    <style>
+        #map_canvas  {
+            /*max-width: none*/
+            height: 600px;
+            width: 100%;
+        }
+    </style>
+
+}
+
+
+@section scripts {
+    <script src="https://maps.google.com/maps/api/js?key=AIzaSyAiALscvKkUhcRibyxTWSNMkYRjENCn5YU" type="text/javascript"></script>
+    <script type="text/javascript">
+
+    $(document).ready(function () {
+        Initialize();
+    });
+
+    function Initialize() {
+        var startingLatitude = @Model.eventObjects[0].transientOBDReadings.Latitude;
+        var startingLongitude = @Model.eventObjects[0].transientOBDReadings.Longitude;
+        //var trip = { lat: startingLatitude, lng:  startingLongitude };
+        //var trip = { lat: 48.724511, lng: -122.4715 };
+        var trip = { lat: 39.693, lng: -97.878 }; // middle of country...
+
+        var mapOptions = {
+            zoom: 4,
+            center: trip
+        };
+        var mapElement = $('#map-canvas');
+        var gmap = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+        // build the markers from the object event set
+        @{
+            int mn = 0;
+            foreach(var eo in Model.eventObjects)
+            {
+                mn++;
+                //var marker = new google.maps.Marker({ position: trip, map: gmap });
+                // TODO:  Change the marker color based on the action.
+                //   Green = off duty
+                //   Yellow = Sleeper Berth
+                //   Red = driving
+                //   Blue = on duty, not driving
+
+
+                // write out JS
+                string jsString = string.Format("var marker_{0} = new google.maps.Marker({{position: {{lat: {1}, lng: {2} }}, map: gmap}});\n", mn, eo.transientOBDReadings.Latitude, eo.transientOBDReadings.Longitude);
+                @Html.Raw(jsString);
+
+
+
+            }
+    }
+
+    }
+
+
+    </script>
+}
+

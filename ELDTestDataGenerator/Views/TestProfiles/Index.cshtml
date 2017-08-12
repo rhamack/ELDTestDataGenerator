@@ -1,0 +1,38 @@
+﻿@model IEnumerable<ELDTestDataGenerator.Data.TestProfile>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ProfileId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProfileName)
+        </th>
+        <th></th>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProfileId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProfileName)
+        </td>
+        <td>
+            @Html.ActionLink("Segments", "Index", "TestProfileSegments", new { profileId = item.ProfileId }, null) |
+            @Html.ActionLink("Edit", "Edit", new { id=item.ProfileId }) |
+            @Html.ActionLink("Plot", "Plot", new { id = item.ProfileId }) 
+        </td>
+    </tr>
+}
+
+</table>

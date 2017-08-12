@@ -47,5 +47,18 @@
             a normal sync process.  This could cause a significant degree of confusion.
         </div>
 
+        <div class="main">
+            Generating data for a test profile creates a set of "Event Objects", which each contain references to the following ELD standard domain objects:
+            <ul>
+                <li>TransientOBDReadings - To simulate reading the OBD device with GPS too.</li>
+                <li>CurrentTripState - Trip state at the time the event is created.</li>
+                <li>CurrentVehicleState - vehicle state at the time the event is created.</li>
+                <li>CurrentLocationState - Location state at the time the event is created.</li>
+                <li>DeviceMalfunctionState - (Not done yet)</li>
+                <li>DataDiagnosticState - (Not done yet)</li>
+                <li>CommonParms - To aid in calling the domain model to create events.</li>
+            </ul>
+        </div>
+
     </div>
 </div>

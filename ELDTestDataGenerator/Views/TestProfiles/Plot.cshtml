@@ -1,6 +1,13 @@
 ﻿@model ELDTestDataGenerator.Models.EventSet
 @{
     ViewBag.Title = "Travel Plot";
+
+    var markerGreenURL = "http://maps.google.com/mapfiles/ms/icons/green-dot.png";
+    var markerRedURL = "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
+    var markerBlueURL = "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
+    var markerYellowURL = "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png";
+
+
 }
 
 
@@ -50,21 +57,41 @@
             {
                 mn++;
                 //var marker = new google.maps.Marker({ position: trip, map: gmap });
-                // TODO:  Change the marker color based on the action.
-                //   Green = off duty
-                //   Yellow = Sleeper Berth
-                //   Red = driving
-                //   Blue = on duty, not driving
 
 
+                // set the color for the marker
+                string markerIcon = markerRedURL;
+                string title = "Driving/Intermediate";
+                switch (eo.currentVehicleState.CurrentEventCode) {
+                    case 1:
+                        markerIcon = markerGreenURL; // off duty
+                        title = string.Format("Off Duty for {0} seconds.", eo.DurationSeconds);
+                        break;
+                    case 2:
+                        markerIcon = markerYellowURL; // sleeper
+                        title = string.Format("Sleeper Berth for {0} seconds.", eo.DurationSeconds);
+                        break;
+                    case 4:
+                        markerIcon = markerBlueURL; // on duty not driving
+                        title = string.Format("On Duty Not Driving for {0} seconds.", eo.DurationSeconds);
+                        break;
+
+                    default:
+                        // driving.  Red.
+                        break;
+
+                }
                 // write out JS
-                string jsString = string.Format("var marker_{0} = new google.maps.Marker({{position: {{lat: {1}, lng: {2} }}, map: gmap}});\n", mn, eo.transientOBDReadings.Latitude, eo.transientOBDReadings.Longitude);
+                string jsString = string.Format("var marker_{0} = new google.maps.Marker({{position: {{lat: {1}, lng: {2} }}, map: gmap, title: '{3}', icon: '{4}'}});\n", mn, eo.transientOBDReadings.Latitude, eo.transientOBDReadings.Longitude, title, markerIcon);
+                //string jsMarker = string.Format("marker_{0}.setIcon('{1}');\n", mn, markerIcon);
+
                 @Html.Raw(jsString);
+                @*@Html.Raw(jsMarker);*@
 
 
 
-            }
-    }
+                    }
+                }
 
     }
 

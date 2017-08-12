@@ -50,6 +50,7 @@ namespace ELDTestDataGenerator
                     // calc the new position and create the event objects
                     Models.EventObjects eox = new Models.EventObjects();
                     eox.IntendedEventName = pseg.ActionId;
+                    eox.DurationSeconds = pseg.DurationSeconds;
 
                     // calculate the new position
                     if (pseg.MPH > 0)

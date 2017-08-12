@@ -78,6 +78,7 @@ namespace ELDTestDataGenerator.Models
 
         public DataDiagnosticState dataDiagnosticState { get; set; }
 
+        public int DurationSeconds { get; set; }
 
     }
 }

@@ -177,12 +177,6 @@
     <Compile Include="Data\Action.cs">
       <DependentUpon>ELDTestDataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Data\Country.cs">
-      <DependentUpon>ELDTestDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Data\CountryState.cs">
-      <DependentUpon>ELDTestDataModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Data\ELDTestDataModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -197,18 +191,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ELDTestDataModel.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Data\EventRecordOrigin.cs">
-      <DependentUpon>ELDTestDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Data\EventRecordStatu.cs">
-      <DependentUpon>ELDTestDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Data\EventStatu.cs">
-      <DependentUpon>ELDTestDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Data\EventType.cs">
-      <DependentUpon>ELDTestDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Data\TestProfile.cs">
       <DependentUpon>ELDTestDataModel.tt</DependentUpon>
@@ -271,6 +253,7 @@
     <Content Include="Data\ELDTestDataModel.edmx.diagram">
       <DependentUpon>ELDTestDataModel.edmx</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\eld-testdataweb-t-us-w2 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

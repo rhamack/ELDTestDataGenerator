@@ -30,8 +30,10 @@ namespace ELDTestDataGenerator.Models
             startingEngineHours = 1200;
             startingOdometer = 55000;
 
-            // start at 8AM today
-            StartingDateTime = new DateTimeOffset(DateTime.Today, new TimeSpan(-7, 0, 0)).AddHours(8);
+            // starting time...
+            //StartingDateTime = new DateTimeOffset(DateTime.Today, new TimeSpan(-7, 0, 0)).AddHours(8);
+            StartingDateTime = DateTimeOffset.UtcNow;
+
             PollingIntervalSeconds = 300;
 
             profileSegments = new List<TestProfileSegment>();

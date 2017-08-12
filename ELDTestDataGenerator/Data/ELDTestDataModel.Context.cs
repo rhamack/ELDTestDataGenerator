@@ -25,12 +25,6 @@ namespace ELDTestDataGenerator.Data
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Country> Countries { get; set; }
-        public virtual DbSet<CountryState> CountryStates { get; set; }
-        public virtual DbSet<EventRecordOrigin> EventRecordOrigins { get; set; }
-        public virtual DbSet<EventRecordStatu> EventRecordStatus { get; set; }
-        public virtual DbSet<EventStatu> EventStatus { get; set; }
-        public virtual DbSet<EventType> EventTypes { get; set; }
         public virtual DbSet<TimeZone> TimeZones { get; set; }
         public virtual DbSet<Action> Actions { get; set; }
         public virtual DbSet<TestProfile> TestProfiles { get; set; }

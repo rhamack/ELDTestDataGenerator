@@ -5,17 +5,10 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="a19391e910f34fb49af0cd44a23d0255" Name="Diagram1">
-        <EntityTypeShape EntityType="ELDTestDataModel.Country" Width="1.625" PointX="8.125" PointY="3.625" />
-        <EntityTypeShape EntityType="ELDTestDataModel.CountryState" Width="1.625" PointX="5.75" PointY="3.75" />
-        <EntityTypeShape EntityType="ELDTestDataModel.EventRecordOrigin" Width="1.625" PointX="7.375" PointY="6.375" />
-        <EntityTypeShape EntityType="ELDTestDataModel.EventRecordStatu" Width="2" PointX="9.125" PointY="6.375" />
-        <EntityTypeShape EntityType="ELDTestDataModel.EventStatu" Width="1.625" PointX="3.625" PointY="2.5" />
-        <EntityTypeShape EntityType="ELDTestDataModel.EventType" Width="1.625" PointX="3.875" PointY="0.5" />
-        <AssociationConnector Association="ELDTestDataModel.FK_EventStatus_EventType" />
-        <EntityTypeShape EntityType="ELDTestDataModel.TimeZone" Width="1.5" PointX="6.75" PointY="0.5" />
-        <EntityTypeShape EntityType="ELDTestDataModel.Action" Width="1.5" PointX="3.5" PointY="4.875" />
+        <EntityTypeShape EntityType="ELDTestDataModel.TimeZone" Width="1.5" PointX="3.375" PointY="5.625" />
+        <EntityTypeShape EntityType="ELDTestDataModel.Action" Width="1.5" PointX="3.375" PointY="3.875" />
         <EntityTypeShape EntityType="ELDTestDataModel.TestProfile" Width="2.375" PointX="0.5" PointY="0.5" />
-        <EntityTypeShape EntityType="ELDTestDataModel.TestProfileSegment" Width="2.5" PointX="3.5" PointY="7" />
+        <EntityTypeShape EntityType="ELDTestDataModel.TestProfileSegment" Width="2.5" PointX="3.375" PointY="0.5" />
         <AssociationConnector Association="ELDTestDataModel.FK_TestProfileSegment_TestProfile" />
       </Diagram>
     </edmx:Diagrams>

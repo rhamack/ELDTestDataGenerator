@@ -31,7 +31,8 @@
             @Html.ActionLink("Edit", "Edit", new { id = item.ProfileId }) |
             @Html.ActionLink("Segments", "Index", "TestProfileSegments", new { profileId = item.ProfileId }, null) |
             @Html.ActionLink("Plot", "Plot", new { id = item.ProfileId }) |
-            @Html.ActionLink("JSON Download", "Download", new { id = item.ProfileId }) 
+            @Html.ActionLink("JSON Download", "Download", new { id = item.ProfileId }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.ProfileId }) 
         </td>
     </tr>
 }

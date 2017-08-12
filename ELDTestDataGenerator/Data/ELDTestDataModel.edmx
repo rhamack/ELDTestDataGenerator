@@ -12,53 +12,6 @@
           <Property Name="ActionId" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="ActionDesc" Type="varchar" MaxLength="50" />
         </EntityType>
-        <EntityType Name="Country">
-          <Key>
-            <PropertyRef Name="CountryCode" />
-          </Key>
-          <Property Name="CountryCode" Type="varchar" MaxLength="5" Nullable="false" />
-          <Property Name="CountryName" Type="varchar" MaxLength="50" />
-        </EntityType>
-        <EntityType Name="CountryState">
-          <Key>
-            <PropertyRef Name="CountryCode" />
-            <PropertyRef Name="StateCode" />
-          </Key>
-          <Property Name="CountryCode" Type="varchar" MaxLength="5" Nullable="false" />
-          <Property Name="StateCode" Type="varchar" MaxLength="5" Nullable="false" />
-          <Property Name="StateName" Type="varchar" MaxLength="50" />
-          <Property Name="StateType" Type="varchar" MaxLength="50" />
-        </EntityType>
-        <EntityType Name="EventRecordOrigin">
-          <Key>
-            <PropertyRef Name="EventRecordOriginCode" />
-          </Key>
-          <Property Name="EventRecordOriginCode" Type="tinyint" Nullable="false" />
-          <Property Name="EventRecordOriginDesc" Type="varchar" MaxLength="100" />
-        </EntityType>
-        <EntityType Name="EventRecordStatus">
-          <Key>
-            <PropertyRef Name="EventRecordStatusCode" />
-          </Key>
-          <Property Name="EventRecordStatusCode" Type="tinyint" Nullable="false" />
-          <Property Name="EventRecordStatusDesc" Type="varchar" MaxLength="50" />
-        </EntityType>
-        <EntityType Name="EventStatus">
-          <Key>
-            <PropertyRef Name="EventTypeCode" />
-            <PropertyRef Name="EventCode" />
-          </Key>
-          <Property Name="EventTypeCode" Type="tinyint" Nullable="false" />
-          <Property Name="EventCode" Type="tinyint" Nullable="false" />
-          <Property Name="EventDesc" Type="varchar" MaxLength="100" />
-        </EntityType>
-        <EntityType Name="EventType">
-          <Key>
-            <PropertyRef Name="EventTypeCode" />
-          </Key>
-          <Property Name="EventTypeCode" Type="tinyint" Nullable="false" />
-          <Property Name="EventTypeDesc" Type="varchar" MaxLength="100" />
-        </EntityType>
         <EntityType Name="TestProfile">
           <Key>
             <PropertyRef Name="ProfileId" />
@@ -121,18 +74,6 @@
           <Property Name="TimeZoneDesc" Type="varchar" MaxLength="150" />
           <Property Name="StandardOffset" Type="int" />
         </EntityType>
-        <Association Name="FK_EventStatus_EventType">
-          <End Role="EventType" Type="Self.EventType" Multiplicity="1" />
-          <End Role="EventStatus" Type="Self.EventStatus" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EventType">
-              <PropertyRef Name="EventTypeCode" />
-            </Principal>
-            <Dependent Role="EventStatus">
-              <PropertyRef Name="EventTypeCode" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_TestProfileSegment_TestProfile">
           <End Role="TestProfile" Type="Self.TestProfile" Multiplicity="1" />
           <End Role="TestProfileSegment" Type="Self.TestProfileSegment" Multiplicity="*" />
@@ -147,19 +88,9 @@
         </Association>
         <EntityContainer Name="ELDTestDataModelStoreContainer">
           <EntitySet Name="Actions" EntityType="Self.Actions" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Country" EntityType="Self.Country" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="CountryState" EntityType="Self.CountryState" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="EventRecordOrigin" EntityType="Self.EventRecordOrigin" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="EventRecordStatus" EntityType="Self.EventRecordStatus" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="EventStatus" EntityType="Self.EventStatus" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="EventType" EntityType="Self.EventType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TestProfile" EntityType="Self.TestProfile" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TestProfileSegment" EntityType="Self.TestProfileSegment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TimeZone" EntityType="Self.TimeZone" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_EventStatus_EventType" Association="Self.FK_EventStatus_EventType">
-            <End Role="EventType" EntitySet="EventType" />
-            <End Role="EventStatus" EntitySet="EventStatus" />
-          </AssociationSet>
           <AssociationSet Name="FK_TestProfileSegment_TestProfile" Association="Self.FK_TestProfileSegment_TestProfile">
             <End Role="TestProfile" EntitySet="TestProfile" />
             <End Role="TestProfileSegment" EntitySet="TestProfileSegment" />
@@ -170,16 +101,6 @@
     <edmx:ConceptualModels>
       <Schema Namespace="ELDTestDataModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="ELDTestDataEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Countries" EntityType="ELDTestDataModel.Country" />
-          <EntitySet Name="CountryStates" EntityType="ELDTestDataModel.CountryState" />
-          <EntitySet Name="EventRecordOrigins" EntityType="ELDTestDataModel.EventRecordOrigin" />
-          <EntitySet Name="EventRecordStatus" EntityType="ELDTestDataModel.EventRecordStatu" />
-          <EntitySet Name="EventStatus" EntityType="ELDTestDataModel.EventStatu" />
-          <EntitySet Name="EventTypes" EntityType="ELDTestDataModel.EventType" />
-          <AssociationSet Name="FK_EventStatus_EventType" Association="ELDTestDataModel.FK_EventStatus_EventType">
-            <End Role="EventType" EntitySet="EventTypes" />
-            <End Role="EventStatu" EntitySet="EventStatus" />
-          </AssociationSet>
           <EntitySet Name="TimeZones" EntityType="ELDTestDataModel.TimeZone" />
           <EntitySet Name="Actions" EntityType="ELDTestDataModel.Action" />
           <EntitySet Name="TestProfiles" EntityType="ELDTestDataModel.TestProfile" />
@@ -189,67 +110,6 @@
             <End Role="TestProfileSegment" EntitySet="TestProfileSegments" />
           </AssociationSet>
         </EntityContainer>
-        <EntityType Name="Country">
-          <Key>
-            <PropertyRef Name="CountryCode" />
-          </Key>
-          <Property Name="CountryCode" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="CountryName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="CountryState">
-          <Key>
-            <PropertyRef Name="CountryCode" />
-            <PropertyRef Name="StateCode" />
-          </Key>
-          <Property Name="CountryCode" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="StateCode" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="StateName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="StateType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="EventRecordOrigin">
-          <Key>
-            <PropertyRef Name="EventRecordOriginCode" />
-          </Key>
-          <Property Name="EventRecordOriginCode" Type="Byte" Nullable="false" />
-          <Property Name="EventRecordOriginDesc" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="EventRecordStatu">
-          <Key>
-            <PropertyRef Name="EventRecordStatusCode" />
-          </Key>
-          <Property Name="EventRecordStatusCode" Type="Byte" Nullable="false" />
-          <Property Name="EventRecordStatusDesc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="EventStatu">
-          <Key>
-            <PropertyRef Name="EventTypeCode" />
-            <PropertyRef Name="EventCode" />
-          </Key>
-          <Property Name="EventTypeCode" Type="Byte" Nullable="false" />
-          <Property Name="EventCode" Type="Byte" Nullable="false" />
-          <Property Name="EventDesc" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="EventType" Relationship="ELDTestDataModel.FK_EventStatus_EventType" FromRole="EventStatu" ToRole="EventType" />
-        </EntityType>
-        <EntityType Name="EventType">
-          <Key>
-            <PropertyRef Name="EventTypeCode" />
-          </Key>
-          <Property Name="EventTypeCode" Type="Byte" Nullable="false" />
-          <Property Name="EventTypeDesc" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="EventStatus" Relationship="ELDTestDataModel.FK_EventStatus_EventType" FromRole="EventType" ToRole="EventStatu" />
-        </EntityType>
-        <Association Name="FK_EventStatus_EventType">
-          <End Type="ELDTestDataModel.EventType" Role="EventType" Multiplicity="1" />
-          <End Type="ELDTestDataModel.EventStatu" Role="EventStatu" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EventType">
-              <PropertyRef Name="EventTypeCode" />
-            </Principal>
-            <Dependent Role="EventStatu">
-              <PropertyRef Name="EventTypeCode" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="TimeZone">
           <Key>
             <PropertyRef Name="TimeZoneId" />
@@ -339,57 +199,6 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="ELDTestDataModelStoreContainer" CdmEntityContainer="ELDTestDataEntities">
-          <EntitySetMapping Name="Countries">
-            <EntityTypeMapping TypeName="ELDTestDataModel.Country">
-              <MappingFragment StoreEntitySet="Country">
-                <ScalarProperty Name="CountryName" ColumnName="CountryName" />
-                <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CountryStates">
-            <EntityTypeMapping TypeName="ELDTestDataModel.CountryState">
-              <MappingFragment StoreEntitySet="CountryState">
-                <ScalarProperty Name="StateType" ColumnName="StateType" />
-                <ScalarProperty Name="StateName" ColumnName="StateName" />
-                <ScalarProperty Name="StateCode" ColumnName="StateCode" />
-                <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="EventRecordOrigins">
-            <EntityTypeMapping TypeName="ELDTestDataModel.EventRecordOrigin">
-              <MappingFragment StoreEntitySet="EventRecordOrigin">
-                <ScalarProperty Name="EventRecordOriginDesc" ColumnName="EventRecordOriginDesc" />
-                <ScalarProperty Name="EventRecordOriginCode" ColumnName="EventRecordOriginCode" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="EventRecordStatus">
-            <EntityTypeMapping TypeName="ELDTestDataModel.EventRecordStatu">
-              <MappingFragment StoreEntitySet="EventRecordStatus">
-                <ScalarProperty Name="EventRecordStatusDesc" ColumnName="EventRecordStatusDesc" />
-                <ScalarProperty Name="EventRecordStatusCode" ColumnName="EventRecordStatusCode" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="EventStatus">
-            <EntityTypeMapping TypeName="ELDTestDataModel.EventStatu">
-              <MappingFragment StoreEntitySet="EventStatus">
-                <ScalarProperty Name="EventDesc" ColumnName="EventDesc" />
-                <ScalarProperty Name="EventCode" ColumnName="EventCode" />
-                <ScalarProperty Name="EventTypeCode" ColumnName="EventTypeCode" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="EventTypes">
-            <EntityTypeMapping TypeName="ELDTestDataModel.EventType">
-              <MappingFragment StoreEntitySet="EventType">
-                <ScalarProperty Name="EventTypeDesc" ColumnName="EventTypeDesc" />
-                <ScalarProperty Name="EventTypeCode" ColumnName="EventTypeCode" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TimeZones">
             <EntityTypeMapping TypeName="ELDTestDataModel.TimeZone">
               <MappingFragment StoreEntitySet="TimeZone">

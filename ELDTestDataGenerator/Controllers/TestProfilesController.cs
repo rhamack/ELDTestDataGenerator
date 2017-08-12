@@ -137,6 +137,8 @@ namespace ELDTestDataGenerator.Controllers
         public ActionResult DeleteConfirmed(string id)
         {
             TestProfile testProfile = db.TestProfiles.Find(id);
+            // delete the segments...
+            db.TestProfileSegments.RemoveRange(db.TestProfileSegments.Where(x => x.ProfileId == id));
             db.TestProfiles.Remove(testProfile);
             db.SaveChanges();
             return RedirectToAction("Index");
